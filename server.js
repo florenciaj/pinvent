@@ -1,8 +1,22 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv").config();
+const bodyParser = require("body-parser");
+const userService = require("./Service/UserService");
 
 const app = express();
+
+// middlewares
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+app.use("/api/users", userService);
+
+//routes
+app.get("/", (req, res) => {
+    res.send("homepage");
+});
 
 const PORT = process.env.PORT;
 
