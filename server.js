@@ -4,6 +4,7 @@ const dotenv = require("dotenv").config();
 const bodyParser = require("body-parser");
 const userService = require("./Service/UserService");
 const ErrorHandler = require("./Middleware/ErrorMiddleware");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 
@@ -11,6 +12,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 app.use("/api/user", userService);
 

@@ -1,5 +1,10 @@
 const asyncHandler = require("express-async-handler")
 const User = require("../Model/UserModel");
+const JWT = require("jsonwebtoken");
+
+const generateToken = (userId) => {
+    return JWT.sign({ userId }, process.env.JWT_SECRET, { expiresIn: "1d" });
+}
 
 const registerUser = asyncHandler(async (req, res) => {
     const { name, email, password } = req.body;
@@ -27,7 +32,20 @@ const registerUser = asyncHandler(async (req, res) => {
 
     if (newUser) {
         const { _id, name, email, phone, bio } = newUser;
-        res.status(201).json({ _id, name, email, phone, bio });
+        const token = generateToken(_id);
+        const today = new Date(), tomorrow = new Date();
+        tomorrow.setDate(today.getDate() + 1)
+
+        // send HTTP-only cookie
+        res.cookie("token", token, {
+            path: "/",
+            httpOnly: true,
+            expires: tomorrow,
+            sameSite: "none",
+            secure: true
+        });
+
+        res.status(201).json({ _id, name, email, phone, bio, token });
     } else {
         res.status(500);
         throw new Error("Invalid user data");
