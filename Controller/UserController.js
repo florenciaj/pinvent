@@ -86,10 +86,10 @@ const loginUser = asyncHandler(async (req, res) => {
         });
 
         res.status(200).json({ _id, name, email, phone, bio, token });
+    } else {
+        res.status(400);
+        throw new Error("Invalid user or password");
     }
-
-    res.status(400);
-    throw new Error("Invalid user or password");
 });
 
 module.exports = {
