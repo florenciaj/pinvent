@@ -92,7 +92,32 @@ const loginUser = asyncHandler(async (req, res) => {
     }
 });
 
+const logoutUser = asyncHandler(async (req, res) => {
+    res.cookie("token", "", {
+        path: "/",
+        httpOnly: true,
+        expires: new Date(0),
+        sameSite: "none",
+        secure: true
+    });
+
+    res.status(200).json({ message: "Successfully logged out" });
+});
+
+const getUser = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user._id);
+    if (user) {
+        const { _id, name, email, phone, bio } = user;
+        res.status(200).json({ _id, name, email, phone, bio });
+    } else {
+        res.status(400);
+        throw new Error("User not found");
+    }
+});
+
 module.exports = {
     registerUser,
-    loginUser
+    loginUser,
+    logoutUser,
+    getUser
 }
