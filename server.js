@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv").config();
 const bodyParser = require("body-parser");
-const userService = require("./Service/UserService");
+const userController = require("./Controller/UserController");
 const ErrorHandler = require("./Middleware/ErrorMiddleware");
 const cookieParser = require("cookie-parser");
 
@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-app.use("/api/user", userService);
+app.use("/api/user", userController);
 
 app.use(ErrorHandler);
 
