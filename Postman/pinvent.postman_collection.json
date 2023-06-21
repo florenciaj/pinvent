@@ -1,0 +1,90 @@
+{
+	"info": {
+		"_postman_id": "dc86f7e9-2841-4355-a249-d49609a018f0",
+		"name": "pinvent",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13971023"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Juan Carlos\",\r\n    \"email\": \"juancarlos@gmail.com\",\r\n    \"password\": \"123456\",\r\n    \"bio\": \"Esta es mi biografía\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{domain}}/{{baseUrl}}/register",
+							"host": [
+								"{{protocol}}{{domain}}"
+							],
+							"path": [
+								"{{baseUrl}}",
+								"register"
+							]
+						},
+						"description": "Register new platform user"
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"juancarlos@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{domain}}/{{baseUrl}}/login",
+							"host": [
+								"{{protocol}}{{domain}}"
+							],
+							"path": [
+								"{{baseUrl}}",
+								"login"
+							]
+						},
+						"description": "Login existing platform user"
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}{{domain}}/{{baseUrl}}/logout",
+							"host": [
+								"{{protocol}}{{domain}}"
+							],
+							"path": [
+								"{{baseUrl}}",
+								"logout"
+							]
+						},
+						"description": "Logout existing platform user"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
