@@ -1,8 +1,8 @@
-const { jwt } = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 const User = require("../Model/UserModel");
 const asyncHandler = require("express-async-handler");
 
-const protectUser = asyncHandler(async (req, res, next) => {
+const protectSession = asyncHandler(async (req, res, next) => {
     try {
         const token = req.cookies.token;
         if (!token) {
@@ -11,7 +11,7 @@ const protectUser = asyncHandler(async (req, res, next) => {
         }
 
         const verified = jwt.verify(token, process.env.JWT_SECRET);
-        const user = await User.findById(verified.id).select("-password");
+        const user = await User.findById(verified.userId).select("-password");
         if (!user) {
             res.status(401);
             throw new Error("User not found");
@@ -26,4 +26,4 @@ const protectUser = asyncHandler(async (req, res, next) => {
     }
 });
 
-module.exports = protectUser;
+module.exports = protectSession;
