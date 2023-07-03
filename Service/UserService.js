@@ -185,14 +185,14 @@ const forgotPasswordUser = asyncHandler(async (req, res) => {
         throw new Error("User not found");
     }
 
-    let token = await Token.findOne({userId: user._id});
-    if(token){
-        await Token.deleteMany({userId: user._id});
+    let token = await Token.findOne({ userId: user._id });
+    if (token) {
+        await Token.deleteMany({ userId: user._id });
     }
 
     let resetToken = crypto.randomBytes(32).toString("HEX") + user._id;
     const hashedToken = crypto.createHash("SHA256").update(resetToken).digest("HEX");
-    
+
     const expirationDate = new Date();
     expirationDate.setMinutes(expirationDate.getMinutes() + 30);
 
@@ -216,12 +216,44 @@ const forgotPasswordUser = asyncHandler(async (req, res) => {
 
     try {
         await sendEmail(subject, message, sendTo, sentFrom);
-        res.status(200).json({success: true, message: "Reset email successfully sent"});
+        res.status(200).json({ success: true, message: "Reset email successfully sent" });
 
     } catch (error) {
         res.status(404);
         throw new Error("Could not send email to user");
     }
+});
+
+const resetPasswordUser = asyncHandler(async (req, res) => {
+    const { password } = req.body;
+    const { resetToken } = req.params;
+
+    if (!resetToken) {
+        res.status(404);
+        throw new Error("Reset token is required");
+    }
+    
+    const hashedToken = crypto.createHash("SHA256").update(resetToken).digest("HEX");
+    const userToken = await Token.findOne({
+        token: hashedToken,
+        expiresAt: { $gt: Date.now() }
+    });
+
+    if (!userToken) {
+        res.status(404);
+        throw new Error("Invalid or expired token");
+    }
+
+    const user = await User.findOne({ _id: userToken.userId });
+    if (!user) {
+        res.status(404);
+        throw new Error("User not found");
+    }
+
+    user.password = password;
+    await user.save();
+
+    res.status(200).send({ message: "Password updated" });
 });
 
 module.exports = {
@@ -232,5 +264,6 @@ module.exports = {
     loginStatus,
     updateUser,
     changePasswordUser,
-    forgotPasswordUser
+    forgotPasswordUser,
+    resetPasswordUser
 }
