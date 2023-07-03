@@ -1,7 +1,10 @@
 const asyncHandler = require("express-async-handler")
 const User = require("../Model/UserModel");
+const Token = require("../Model/TokenModel");
 const bcrypt = require("bcryptjs");
 const JWT = require("jsonwebtoken");
+const crypto = require("crypto");
+const sendEmail = require("../Utils/SendEmail");
 
 const generateToken = (userId) => {
     return JWT.sign({ userId }, process.env.JWT_SECRET, { expiresIn: "1d" });
@@ -150,11 +153,84 @@ const updateUser = asyncHandler(async (req, res) => {
     });
 });
 
+const changePasswordUser = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user._id);
+    if (!user) {
+        res.status(404);
+        throw new Error("User not found");
+    }
+
+    const { currentPassword, newPassword } = req.body;
+    if (!currentPassword || !newPassword) {
+        res.status(404);
+        throw new Error("Add a password");
+    }
+
+    const isPasswordCorrect = await bcrypt.compare(currentPassword, user.password);
+    if (isPasswordCorrect) {
+        user.password = newPassword;
+        await user.save();
+        res.status(200).send("Password updated");
+    } else {
+        res.status(404);
+        throw new Error("Wrong password");
+    }
+});
+
+const forgotPasswordUser = asyncHandler(async (req, res) => {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+        res.status(404);
+        throw new Error("User not found");
+    }
+
+    let token = await Token.findOne({userId: user._id});
+    if(token){
+        await Token.deleteMany({userId: user._id});
+    }
+
+    let resetToken = crypto.randomBytes(32).toString("HEX") + user._id;
+    const hashedToken = crypto.createHash("SHA256").update(resetToken).digest("HEX");
+    
+    const expirationDate = new Date();
+    expirationDate.setMinutes(expirationDate.getMinutes() + 30);
+
+    await new Token({
+        userId: user._id,
+        token: hashedToken,
+        createdAt: Date.now(),
+        expiresAt: expirationDate
+    }).save();
+
+    const resetURL = `${process.env.FRONTEND_API_URL}/reset-password/${resetToken}`;
+    const message = `
+    <h2>Hello, ${user.name}</h2>
+    <p>Please click on the following link to reset your password:</p>
+    <a href="${resetURL}" clicktracking=off>${resetURL}</a>
+    <p>This link will expire in 30 minutes</p>
+    `;
+    const subject = "Password reset request";
+    const sendTo = user.email;
+    const sentFrom = process.env.EMAIL_USER;
+
+    try {
+        await sendEmail(subject, message, sendTo, sentFrom);
+        res.status(200).json({success: true, message: "Reset email successfully sent"});
+
+    } catch (error) {
+        res.status(404);
+        throw new Error("Could not send email to user");
+    }
+});
+
 module.exports = {
     registerUser,
     loginUser,
     logoutUser,
     getUser,
     loginStatus,
-    updateUser
+    updateUser,
+    changePasswordUser,
+    forgotPasswordUser
 }
