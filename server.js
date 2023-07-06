@@ -2,7 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv").config();
 const bodyParser = require("body-parser");
-const userController = require("./Controller/UserController");
+const UserController = require("./Controller/UserController");
+const ProductController = require("./Controller/ProductController");
 const ErrorHandler = require("./Middleware/ErrorMiddleware");
 const cookieParser = require("cookie-parser");
 
@@ -14,7 +15,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-app.use("/api/user", userController);
+app.use("/api/user", UserController);
+app.use("/api/product", ProductController);
 
 app.use(ErrorHandler);
 
