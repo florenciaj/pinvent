@@ -6,6 +6,7 @@ const UserController = require("./Controller/UserController");
 const ProductController = require("./Controller/ProductController");
 const ErrorHandler = require("./Middleware/ErrorMiddleware");
 const cookieParser = require("cookie-parser");
+const path = require("path");
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use("/upload", express.static(path.join(__dirname, "upload")));
 
 app.use("/api/user", UserController);
 app.use("/api/product", ProductController);
