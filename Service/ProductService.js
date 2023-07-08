@@ -50,7 +50,28 @@ const getProducts = asyncHandler(async (req, res) => {
     res.status(200).json(products);
 });
 
+const getProduct = asyncHandler(async (req, res) => {
+    if (!req.params.productId.match(/^[0-9a-fA-F]{24}$/)) {
+        res.status(400);
+        throw new Error("Invalid product ID");
+    }
+
+    const product = await Product.findById(req.params.productId);
+    if (!product) {
+        res.status(404);
+        throw new Error("Product not found");
+    }
+
+    if (product.user.toString() != req.user.id) {
+        res.status(401);
+        throw new Error("User not authorized");
+    }
+
+    res.status(200).json(product);
+});
+
 module.exports = {
     createProduct,
-    getProducts
+    getProducts,
+    getProduct
 };
