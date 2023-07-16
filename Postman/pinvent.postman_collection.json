@@ -140,6 +140,47 @@
 							}
 						},
 						"url": {
+							"raw": "{{protocol}}{{domain}}/{{baseUrl}}/user/login",
+							"host": [
+								"{{protocol}}{{domain}}"
+							],
+							"path": [
+								"{{baseUrl}}",
+								"user",
+								"login"
+							]
+						},
+						"description": "Login existing platform user"
+					},
+					"response": []
+				},
+				{
+					"name": "Login Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"token\", response.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"juancarlos@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
 							"raw": "{{protocol}}{{domain}}/{{baseUrl}}/login",
 							"host": [
 								"{{protocol}}{{domain}}"
@@ -204,6 +245,361 @@
 							]
 						},
 						"description": "Validates if user is still logged in"
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"token\", response.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"currentPassword\": \"123456\",\r\n    \"newPassword\": \"1234567\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{domain}}/{{baseUrl}}/change-password",
+							"host": [
+								"{{protocol}}{{domain}}"
+							],
+							"path": [
+								"{{baseUrl}}",
+								"change-password"
+							]
+						},
+						"description": "Changes current user password"
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"token\", response.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"juancarlos@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{domain}}/{{baseUrl}}/user/forgot-password",
+							"host": [
+								"{{protocol}}{{domain}}"
+							],
+							"path": [
+								"{{baseUrl}}",
+								"user",
+								"forgot-password"
+							]
+						},
+						"description": "Sends link to change user password by email"
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot Password Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"token\", response.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"cosmefulatino@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{domain}}/{{baseUrl}}/forgot-password",
+							"host": [
+								"{{protocol}}{{domain}}"
+							],
+							"path": [
+								"{{baseUrl}}",
+								"forgot-password"
+							]
+						},
+						"description": "Sends link to change user password by email"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "Add product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Ventilador Liliana\",\r\n    \"sku\": \"VL\",\r\n    \"category\": \"Electrodomésticos\",\r\n    \"amount\": \"3\",\r\n    \"price\": \"8900\",\r\n    \"description\": \"Ventilador de pie\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{domain}}/{{baseUrl}}/product",
+							"host": [
+								"{{protocol}}{{domain}}"
+							],
+							"path": [
+								"{{baseUrl}}",
+								"product"
+							]
+						},
+						"description": "Add a new product"
+					},
+					"response": []
+				},
+				{
+					"name": "Add product (with photo)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Ventilador Liliana",
+									"type": "text"
+								},
+								{
+									"key": "sku",
+									"value": "VL",
+									"type": "text"
+								},
+								{
+									"key": "category",
+									"value": "Electrodomésticos",
+									"type": "text"
+								},
+								{
+									"key": "amount",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "8900",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Ventilador de pie",
+									"type": "text"
+								},
+								{
+									"key": "photo",
+									"type": "file",
+									"src": "/C:/Users/Admin/Downloads/pan-rustico-sin-sal1-ac05f21767dc395cfd15942631605301-640-0.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{protocol}}{{domain}}/{{baseUrl}}/product",
+							"host": [
+								"{{protocol}}{{domain}}"
+							],
+							"path": [
+								"{{baseUrl}}",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}{{domain}}/{{baseUrl}}/product",
+							"host": [
+								"{{protocol}}{{domain}}"
+							],
+							"path": [
+								"{{baseUrl}}",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}{{domain}}/{{baseUrl}}/product/64a8e6e1f82fd9d913652c4e",
+							"host": [
+								"{{protocol}}{{domain}}"
+							],
+							"path": [
+								"{{baseUrl}}",
+								"product",
+								"64a8e6e1f82fd9d913652c4e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}{{domain}}/{{baseUrl}}/product/64a636eb05d204182861401d",
+							"host": [
+								"{{protocol}}{{domain}}"
+							],
+							"path": [
+								"{{baseUrl}}",
+								"product",
+								"64a636eb05d204182861401d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update product",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Teclado mecánico\",\r\n    \"sku\": \"TM\",\r\n    \"category\": \"Tecnología\",\r\n    \"amount\": \"8\",\r\n    \"price\": \"7430\",\r\n    \"description\": \"Teclado mecánico con lucecitas\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{domain}}/{{baseUrl}}/product/64a6374105d2041828614020",
+							"host": [
+								"{{protocol}}{{domain}}"
+							],
+							"path": [
+								"{{baseUrl}}",
+								"product",
+								"64a6374105d2041828614020"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update product (with photo)",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Teclado mecánico",
+									"type": "text"
+								},
+								{
+									"key": "sku",
+									"value": "TM",
+									"type": "text"
+								},
+								{
+									"key": "category",
+									"value": "Tecnología",
+									"type": "text"
+								},
+								{
+									"key": "amount",
+									"value": "8",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "7430",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Teclado mecánico con lucecitas",
+									"type": "text"
+								},
+								{
+									"key": "photo",
+									"type": "file",
+									"src": "/C:/Users/Admin/Downloads/keyboard.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{protocol}}{{domain}}/{{baseUrl}}/product/64a6374105d2041828614020",
+							"host": [
+								"{{protocol}}{{domain}}"
+							],
+							"path": [
+								"{{baseUrl}}",
+								"product",
+								"64a6374105d2041828614020"
+							]
+						}
 					},
 					"response": []
 				}
