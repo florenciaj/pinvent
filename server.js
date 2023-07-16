@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv").config();
 const bodyParser = require("body-parser");
+const ContactController = require("./Controller/ContactController");
 const UserController = require("./Controller/UserController");
 const ProductController = require("./Controller/ProductController");
 const ErrorHandler = require("./Middleware/ErrorMiddleware");
@@ -19,6 +20,7 @@ app.use("/upload", express.static(path.join(__dirname, "upload")));
 
 app.use("/api/user", UserController);
 app.use("/api/product", ProductController);
+app.use("/api/contact", ContactController);
 
 app.use(ErrorHandler);
 

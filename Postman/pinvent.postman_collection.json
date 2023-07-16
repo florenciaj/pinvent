@@ -604,6 +604,38 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Contact",
+			"item": [
+				{
+					"name": "Send Contact Email",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"subject\": \"Consulta 🤔\",\r\n    \"message\": \"Tengo una consulta sobre la página\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{domain}}/{{baseUrl}}/contact",
+							"host": [
+								"{{protocol}}{{domain}}"
+							],
+							"path": [
+								"{{baseUrl}}",
+								"contact"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }

@@ -67,7 +67,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
     const user = await User.findOne({ email });
     if (!user) {
-        res.status(400);
+        res.status(404);
         throw new Error("User not found");
     }
 
