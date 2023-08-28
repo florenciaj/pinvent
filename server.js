@@ -8,6 +8,7 @@ const ProductController = require("./Controller/ProductController");
 const ErrorHandler = require("./Middleware/ErrorMiddleware");
 const cookieParser = require("cookie-parser");
 const path = require("path");
+const cors = require("cors");
 
 const app = express();
 
@@ -15,6 +16,10 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cors({
+    origin: ["http://localhost:3000"],
+    credentials: true
+}));
 app.use(cookieParser());
 app.use("/upload", express.static(path.join(__dirname, "upload")));
 
